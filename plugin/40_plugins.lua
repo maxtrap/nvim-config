@@ -159,6 +159,9 @@ later(function() add('rafamadriz/friendly-snippets') end)
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
 MiniDeps.now(function()
 --   -- Install only those that you need
+   add('polirritmico/monokai-nightasty.nvim')
+   -- require('monokai').setup {}
+
    add('navarasu/onedark.nvim')
    require('onedark').setup {
        style = 'darker', -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer'
@@ -168,7 +171,7 @@ MiniDeps.now(function()
 --   add('ellisonleao/gruvbox.nvim')
 --
    -- Enable only one
-   vim.cmd('color onedark')
+   vim.cmd('color monokai-nightasty')
 end)
 
 -- Custom Plugins =========================================================
