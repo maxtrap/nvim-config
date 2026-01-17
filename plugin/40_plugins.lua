@@ -157,12 +157,33 @@ later(function() add('rafamadriz/friendly-snippets') end)
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
--- MiniDeps.now(function()
+MiniDeps.now(function()
 --   -- Install only those that you need
+   add('navarasu/onedark.nvim')
+   require('onedark').setup {
+       style = 'darker', -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer'
+   }
 --   add('sainnhe/everforest')
 --   add('Shatur/neovim-ayu')
 --   add('ellisonleao/gruvbox.nvim')
 --
---   -- Enable only one
---   vim.cmd('color everforest')
--- end)
+   -- Enable only one
+   vim.cmd('color onedark')
+end)
+
+-- Custom Plugins =========================================================
+
+add({
+    source = 'sphamba/smear-cursor.nvim',
+})
+require('smear_cursor').setup({
+    smear_between_buffers = true,
+})
+
+add({
+    source = 'mbbill/undotree'
+})
+
+add({
+    source = 'christoomey/vim-tmux-navigator'
+})

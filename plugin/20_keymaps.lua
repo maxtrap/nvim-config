@@ -19,7 +19,25 @@ end
 nmap('[p', '<Cmd>exe "put! " . v:register<CR>', 'Paste Above')
 nmap(']p', '<Cmd>exe "put "  . v:register<CR>', 'Paste Below')
 
--- Many general mappings are created by 'mini.basics'. See 'plugin/30_mini.lua'
+local opts = { noremap = true, silent = true }
+
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move down in buffer with cursor centered' })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up in buffer with cursor centered' })
+
+-- Paste without replacing clipboard content
+vim.keymap.set('v', 'p', '"_dp', opts)
+vim.keymap.set('v', 'P', '"_dP', opts)
+
+-- Clears search highlights with Ctrl+C. I needed this so badly!!!
+vim.keymap.set('n', '<C-c>', ':nohl<CR>', { desc = 'Clear search hl', silent = true })
+
+-- TODO This does lsp stuff I don't know yet.
+-- im.keymap.set('n', '<leader>f', vim.lsp.buf.format)
+
+-- prevent x delete from registering when next paste
+vim.keymap.set('n', 'x', '"_x', opts)
+
+-- Many general mappings are create to clipboardd by 'mini.basics'. See 'plugin/30_mini.lua'
 
 -- stylua: ignore start
 -- The next part (until `-- stylua: ignore end`) is aligned manually for easier
@@ -58,11 +76,13 @@ _G.Config.leader_group_clues = {
   { mode = 'n', keys = '<Leader>m', desc = '+Map' },
   { mode = 'n', keys = '<Leader>o', desc = '+Other' },
   { mode = 'n', keys = '<Leader>s', desc = '+Session' },
-  { mode = 'n', keys = '<Leader>t', desc = '+Terminal' },
+  { mode = 'n', keys = '<Leader>t', desc = '+Text' },
+  { mode = 'n', keys = '<Leader>u', desc = '+UndoTree' },
   { mode = 'n', keys = '<Leader>v', desc = '+Visits' },
 
   { mode = 'x', keys = '<Leader>g', desc = '+Git' },
   { mode = 'x', keys = '<Leader>l', desc = '+Language' },
+  { mode = 'x', keys = '<Leader>t', desc = '+Text' },
 }
 
 -- Helpers for a more concise `<Leader>` mappings.
@@ -84,13 +104,36 @@ end
 local new_scratch_buffer = function()
   vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
 end
+local create_file = function()
+  -- pcall catches the 'Keyboard Interrupt' error if you hit Esc
+  local status, name = pcall(vim.fn.input, "New file name: ")
+  vim.cmd("redraw")
+
+  -- 1. If status is false, the user hit Esc/Ctrl-C
+  -- 2. If name is empty, the user just hit Enter without typing
+  if not status or name == "" then
+    print("Operation cancelled")
+    return
+  end
+
+  vim.cmd("edit " .. name)
+  print("Opened: " .. name)
+end
+local copy_file_path = function()
+  local filePath = vim.fn.expand('%:~') -- Gets the file path relative to the home directory
+  vim.fn.setreg('+', filePath) -- Copy the file path to the clipboard register
+  print('File path copied to clipboard: ' .. filePath)
+end
 
 nmap_leader('ba', '<Cmd>b#<CR>',                                 'Alternate')
+nmap_leader('bc', create_file,                                   'Create')
 nmap_leader('bd', '<Cmd>lua MiniBufremove.delete()<CR>',         'Delete')
 nmap_leader('bD', '<Cmd>lua MiniBufremove.delete(0, true)<CR>',  'Delete!')
 nmap_leader('bs', new_scratch_buffer,                            'Scratch')
-nmap_leader('bw', '<Cmd>lua MiniBufremove.wipeout()<CR>',        'Wipeout')
-nmap_leader('bW', '<Cmd>lua MiniBufremove.wipeout(0, true)<CR>', 'Wipeout!')
+nmap_leader('bx', '<Cmd>lua MiniBufremove.wipeout()<CR>',        'Exit')
+nmap_leader('bX', '<Cmd>lua MiniBufremove.wipeout(0, true)<CR>', 'Exit!')
+nmap_leader('by', copy_file_path,                                'Copy file path')
+
 
 -- e is for 'Explore' and 'Edit'. Common usage:
 -- - `<Leader>ed` - open explorer at current working directory
@@ -224,9 +267,12 @@ nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>',         'New')
 nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>',   'Read')
 nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>',          'Write current')
 
--- t is for 'Terminal'
-nmap_leader('tT', '<Cmd>horizontal term<CR>', 'Terminal (horizontal)')
-nmap_leader('tt', '<Cmd>vertical term<CR>',   'Terminal (vertical)')
+-- t is for 'Text'.
+vim.keymap.set({ 'n', 'x' }, '<Leader>td', [["_d]], { desc = 'No copy delete' })
+nmap_leader('tr', [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], 'Replace globally') -- Replace the word cursor is on globally
+
+-- u is for 'UndoTree'.
+nmap_leader('u', vim.cmd.UndotreeToggle, 'Toggle UndoTree')
 
 -- v is for 'Visits'. Common usage:
 -- - `<Leader>vv` - add    "core" label to current file.

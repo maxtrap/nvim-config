@@ -580,6 +580,8 @@ later(function()
   -- Map built-in navigation characters to force map refresh
   for _, key in ipairs({ 'n', 'N', '*', '#' }) do
     local rhs = key
+      -- Center the screen
+      .. 'zz'
       -- Also open enough folds when jumping to the next match
       .. 'zv'
       .. '<Cmd>lua MiniMap.refresh({}, { lines = false, scrollbar = false })<CR>'
