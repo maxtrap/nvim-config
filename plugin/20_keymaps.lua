@@ -76,7 +76,7 @@ _G.Config.leader_group_clues = {
   { mode = 'n', keys = '<Leader>m', desc = '+Map' },
   { mode = 'n', keys = '<Leader>o', desc = '+Other' },
   { mode = 'n', keys = '<Leader>s', desc = '+Session' },
-  { mode = 'n', keys = '<Leader>t', desc = '+Text' },
+  { mode = 'n', keys = '<Leader>t', desc = '+Terminal' },
   { mode = 'n', keys = '<Leader>u', desc = '+UndoTree' },
   { mode = 'n', keys = '<Leader>v', desc = '+Visits' },
 
@@ -265,9 +265,9 @@ nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>',         'New')
 nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>',   'Read')
 nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>',          'Write current')
 
--- t is for 'Text'.
-vim.keymap.set({ 'n', 'x' }, '<Leader>td', [["_d]], { desc = 'No copy delete' })
-nmap_leader('tr', [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], 'Replace globally') -- Replace the word cursor is on globally
+-- t is for 'Terminal'
+nmap_leader('tT', '<Cmd>botright 12split | term<CR>', 'Terminal (horizontal)')
+nmap_leader('tt', '<Cmd>botright 60vsplit | term<CR>',   'Terminal (vertical)')
 
 -- u is for 'UndoTree'.
 nmap_leader('u', vim.cmd.UndotreeToggle, 'Toggle UndoTree')
