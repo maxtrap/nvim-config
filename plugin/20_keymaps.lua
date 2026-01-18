@@ -25,7 +25,7 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move down in buffer with curso
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up in buffer with cursor centered' })
 
 -- Paste without replacing clipboard content
-vim.keymap.set('v', 'p', '"_dp', opts)
+vim.keymap.set('v', 'p', '"_dP', opts)
 vim.keymap.set('v', 'P', '"_dP', opts)
 
 -- Clears search highlights with Ctrl+C. I needed this so badly!!!
