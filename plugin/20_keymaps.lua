@@ -37,6 +37,9 @@ vim.keymap.set('n', '<C-c>', ':nohl<CR>', { desc = 'Clear search hl', silent = t
 -- prevent x delete from registering when next paste
 vim.keymap.set('n', 'x', '"_x', opts)
 
+-- Exit terminal mode with Esc
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
+
 -- Many general mappings are create to clipboardd by 'mini.basics'. See 'plugin/30_mini.lua'
 
 -- stylua: ignore start
