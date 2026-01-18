@@ -53,9 +53,12 @@ now_if_args(function()
   -- Define languages which will have parsers installed and auto enabled
   local languages = {
     -- These are already pre-installed with Neovim. Used as an example.
+    -- 'latex',
     'lua',
-    'vimdoc',
     'markdown',
+    'nix',
+    'python',
+    'vimdoc',
     -- Add here more languages with which you want to use tree-sitter
     -- To see available languages:
     -- - Execute `:=require('nvim-treesitter').get_available()`
@@ -180,17 +183,68 @@ end)
 
 -- Custom Plugins =========================================================
 
-add({
-    source = 'sphamba/smear-cursor.nvim',
-})
-require('smear_cursor').setup({
-    smear_between_buffers = true,
-})
+-- later(function()
+--     MiniDeps.add({
+--     source = "OXY2DEV/markview.nvim",
+--
+--     -- Completion for `blink.cmp`
+--     -- depends = { "saghen/blink.cmp" },
+--     });
+-- end)
 
-add({
-    source = 'mbbill/undotree'
-})
+later(function()
+  add({
+      source = 'sphamba/smear-cursor.nvim',
+  })
+end)
+later(function()
+  require('smear_cursor').setup({
+      smear_between_buffers = true,
+  })
+end)
 
-add({
-    source = 'christoomey/vim-tmux-navigator'
-})
+later(function()
+  add({
+      source = 'mbbill/undotree'
+  })
+end)
+
+later(function()
+  add({
+      source = 'christoomey/vim-tmux-navigator'
+  })
+end)
+
+later(function()
+  add({
+      source = 'folke/snacks.nvim'
+  })
+  require('snacks').setup {
+      image = { enabled = true }
+  }
+end)
+
+
+later(function()
+  add({
+      source = 'meanderingprogrammer/render-markdown.nvim',
+      depends = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }
+  })
+  require('render-markdown').setup({})
+end)
+
+
+later(function()
+    add({
+        source = 'lukas-reineke/indent-blankline.nvim'
+    })
+    require("ibl").setup()
+end)
+
+
+-- later(function()
+--   add({
+--     source = 'lervag/vimtex',
+--   })
+--   require('vimtex').setup {}
+-- end)
