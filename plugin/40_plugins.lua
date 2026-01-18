@@ -56,8 +56,6 @@ now_if_args(function()
     -- 'latex',
     'lua',
     'markdown',
-    'nix',
-    'python',
     'vimdoc',
     -- Add here more languages with which you want to use tree-sitter
     -- To see available languages:
@@ -156,10 +154,24 @@ later(function() add('rafamadriz/friendly-snippets') end)
 -- If you need them to work elsewhere, consider using other package managers.
 --
 -- You can use it like so:
--- now_if_args(function()
---   add('mason-org/mason.nvim')
---   require('mason').setup()
--- end)
+now_if_args(function()
+  add('mason-org/mason.nvim')
+  require('mason').setup()
+
+  add({
+      source = 'mason-org/mason-lspconfig.nvim',
+      depends = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' }
+  })
+  require('mason-lspconfig').setup({
+      ensure_installed = {
+          'clangd',
+          'html',
+          'lua_ls',
+          'pyright',
+          'texlab',
+      },
+  })
+end)
 
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'
@@ -182,15 +194,6 @@ MiniDeps.now(function()
 end)
 
 -- Custom Plugins =========================================================
-
--- later(function()
---     MiniDeps.add({
---     source = "OXY2DEV/markview.nvim",
---
---     -- Completion for `blink.cmp`
---     -- depends = { "saghen/blink.cmp" },
---     });
--- end)
 
 later(function()
   add({
@@ -240,7 +243,6 @@ later(function()
     })
     require("ibl").setup()
 end)
-
 
 -- later(function()
 --   add({
