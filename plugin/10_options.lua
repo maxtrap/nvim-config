@@ -17,6 +17,7 @@
 
 -- General ====================================================================
 vim.g.mapleader = ' ' -- Use `<Space>` as <Leader> key
+vim.g.maplocalleader = ','
 
 vim.opt.clipboard:append("unnamedplus") -- Sync system clipboard with neovim
 

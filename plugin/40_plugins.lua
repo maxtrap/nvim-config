@@ -244,9 +244,6 @@ later(function()
     require("ibl").setup()
 end)
 
--- later(function()
---   add({
---     source = 'lervag/vimtex',
---   })
---   require('vimtex').setup {}
--- end)
+MiniDeps.now(function()
+    add("lervag/vimtex")
+end)
