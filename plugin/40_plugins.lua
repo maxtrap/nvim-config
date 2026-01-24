@@ -53,10 +53,12 @@ now_if_args(function()
   -- Define languages which will have parsers installed and auto enabled
   local languages = {
     -- These are already pre-installed with Neovim. Used as an example.
-    -- 'latex',
+    'html',
+    'latex',
     'lua',
     'markdown',
     'vimdoc',
+    'python',
     -- Add here more languages with which you want to use tree-sitter
     -- To see available languages:
     -- - Execute `:=require('nvim-treesitter').get_available()`
@@ -249,6 +251,7 @@ MiniDeps.now(function()
     add("lervag/vimtex")
 end)
 
--- later(function()
---     add("R-nvim/R.nvim")
--- end)
+later(function ()
+    add('windwp/nvim-ts-autotag')
+    require("nvim-ts-autotag").setup()
+end)
