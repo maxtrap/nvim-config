@@ -245,5 +245,10 @@ later(function()
 end)
 
 MiniDeps.now(function()
+    vim.g.vimtex_view_method = "zathura"
     add("lervag/vimtex")
 end)
+
+-- later(function()
+--     add("R-nvim/R.nvim")
+-- end)

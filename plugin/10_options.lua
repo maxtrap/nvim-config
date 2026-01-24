@@ -19,7 +19,9 @@
 vim.g.mapleader = ' ' -- Use `<Space>` as <Leader> key
 vim.g.maplocalleader = ','
 
-vim.opt.clipboard:append("unnamedplus") -- Sync system clipboard with neovim
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
 
 vim.o.mouse       = 'a'            -- Enable mouse
 vim.o.mousescroll = 'ver:25,hor:6' -- Customize mouse scroll

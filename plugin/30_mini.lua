@@ -302,6 +302,7 @@ later(function()
       { mode =   'n',        keys = '<C-w>' },    -- Window commands
       { mode = { 'n', 'x' }, keys = 's' },        -- `s` key (mini.surround, etc.)
       { mode = { 'n', 'x' }, keys = 'z' },        -- `z` key
+      { mode = { 'n', 'x' }, keys = ',' },        -- `,` key
     },
   })
 end)
