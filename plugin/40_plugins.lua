@@ -38,50 +38,65 @@ local now_if_args = _G.Config.now_if_args
 --   with `:TSInstall <language>`. Be sure to have necessary system dependencies
 --   (see MiniMax README section for software requirements).
 now_if_args(function()
-  add({
-    source = 'nvim-treesitter/nvim-treesitter',
-    -- Update tree-sitter parser after plugin is updated
-    hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
-  })
-  add({
-    source = 'nvim-treesitter/nvim-treesitter-textobjects',
-    -- Use `main` branch since `master` branch is frozen, yet still default
-    -- It is needed for compatibility with 'nvim-treesitter' `main` branch
-    checkout = 'main',
-  })
+	add({
+		source = "nvim-treesitter/nvim-treesitter",
+		-- Update tree-sitter parser after plugin is updated
+		hooks = {
+			post_checkout = function()
+				vim.cmd("TSUpdate")
+			end,
+		},
+	})
+	add({
+		source = "nvim-treesitter/nvim-treesitter-textobjects",
+		-- Use `main` branch since `master` branch is frozen, yet still default
+		-- It is needed for compatibility with 'nvim-treesitter' `main` branch
+		checkout = "main",
+	})
 
-  -- Define languages which will have parsers installed and auto enabled
-  -- After changing this, restart Neovim once to install necessary parsers. Wait
-  -- for the installation to finish before opening a file for added language(s).
-  local languages = {
-    -- These are already pre-installed with Neovim. Used as an example.
-    'html',
-    'latex',
-    'lua',
-    'markdown',
-    'vimdoc',
-    'python',
-    -- Add here more languages with which you want to use tree-sitter
-    -- To see available languages:
-    -- - Execute `:=require('nvim-treesitter').get_available()`
-    -- - Visit 'SUPPORTED_LANGUAGES.md' file at
-    --   https://github.com/nvim-treesitter/nvim-treesitter/blob/main
-  }
-  local isnt_installed = function(lang)
-    return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
-  end
-  local to_install = vim.tbl_filter(isnt_installed, languages)
-  if #to_install > 0 then require('nvim-treesitter').install(to_install) end
+	-- Define languages which will have parsers installed and auto enabled
+	-- After changing this, restart Neovim once to install necessary parsers. Wait
+	-- for the installation to finish before opening a file for added language(s).
+	local languages = {
+		-- These are already pre-installed with Neovim. Used as an example.
+		"bash",
+		"css",
+		"html",
+		"javascript",
+		"jsx",
+		"latex",
+		"lua",
+		"markdown",
+		"markdown_inline",
+		"r",
+		"vimdoc",
+		"python",
+		"yaml",
+		-- Add here more languages with which you want to use tree-sitter
+		-- To see available languages:
+		-- - Execute `:=require('nvim-treesitter').get_available()`
+		-- - Visit 'SUPPORTED_LANGUAGES.md' file at
+		--   https://github.com/nvim-treesitter/nvim-treesitter/blob/main
+	}
+	local isnt_installed = function(lang)
+		return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0
+	end
+	local to_install = vim.tbl_filter(isnt_installed, languages)
+	if #to_install > 0 then
+		require("nvim-treesitter").install(to_install)
+	end
 
-  -- Enable tree-sitter after opening a file for a target language
-  local filetypes = {}
-  for _, lang in ipairs(languages) do
-    for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
-      table.insert(filetypes, ft)
-    end
-  end
-  local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-  _G.Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+	-- Enable tree-sitter after opening a file for a target language
+	local filetypes = {}
+	for _, lang in ipairs(languages) do
+		for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+			table.insert(filetypes, ft)
+		end
+	end
+	local ts_start = function(ev)
+		vim.treesitter.start(ev.buf)
+	end
+	_G.Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
 -- Language servers ===========================================================
@@ -100,15 +115,15 @@ end)
 --
 -- Add it now if file (and not 'mini.starter') is shown after startup.
 now_if_args(function()
-  add('neovim/nvim-lspconfig')
+	add("neovim/nvim-lspconfig")
 
-  -- Use `:h vim.lsp.enable()` to automatically enable language server based on
-  -- the rules provided by 'nvim-lspconfig'.
-  -- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
-  -- Uncomment and tweak the following `vim.lsp.enable()` call to enable servers.
-  -- vim.lsp.enable({
-  --   -- For example, if `lua-language-server` is installed, use `'lua_ls'` entry
-  -- })
+	-- Use `:h vim.lsp.enable()` to automatically enable language server based on
+	-- the rules provided by 'nvim-lspconfig'.
+	-- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
+	-- Uncomment and tweak the following `vim.lsp.enable()` call to enable servers.
+	-- vim.lsp.enable({
+	--   -- For example, if `lua-language-server` is installed, use `'lua_ls'` entry
+	-- })
 end)
 
 -- Formatting =================================================================
@@ -120,21 +135,39 @@ end)
 -- The 'stevearc/conform.nvim' plugin is a good and maintained solution for easier
 -- formatting setup.
 later(function()
-  add('stevearc/conform.nvim')
+	add("stevearc/conform.nvim")
 
-  -- See also:
-  -- - `:h Conform`
-  -- - `:h conform-options`
-  -- - `:h conform-formatters`
-  require('conform').setup({
-    default_format_opts = {
-      -- Allow formatting from LSP server if no dedicated formatter is available
-      lsp_format = 'fallback',
-    },
-    -- Map of filetype to formatters
-    -- Make sure that necessary CLI tool is available
-    -- formatters_by_ft = { lua = { 'stylua' } },
-  })
+	-- See also:
+	-- - `:h Conform`
+	-- - `:h conform-options`
+	-- - `:h conform-formatters`
+	require("conform").setup({
+		default_format_opts = {
+			-- Allow formatting from LSP server if no dedicated formatter is available
+			lsp_format = "fallback",
+		},
+		-- Map of filetype to formatters
+		-- Make sure that necessary CLI tool is available
+		formatters_by_ft = {
+			lua = { "stylua" },
+			javascript = { "prettier" },
+			typescript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescriptreact = { "prettier" },
+			css = { "prettier" },
+			html = { "prettier" },
+			json = { "prettier" },
+			yaml = { "prettier" },
+			markdown = { "prettier" },
+			graphql = { "prettier" },
+			python = { "black" },
+		},
+		format_on_save = {
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 500,
+		},
+	})
 end)
 
 -- Snippets ===================================================================
@@ -146,7 +179,9 @@ end)
 -- snippet files. They are organized in 'snippets/' directory (mostly) per language.
 -- 'mini.snippets' is designed to work with it as seamlessly as possible.
 -- See `:h MiniSnippets.gen_loader.from_lang()`.
-later(function() add('rafamadriz/friendly-snippets') end)
+later(function()
+	add("rafamadriz/friendly-snippets")
+end)
 
 -- Honorable mentions =========================================================
 
@@ -159,101 +194,132 @@ later(function() add('rafamadriz/friendly-snippets') end)
 --
 -- You can use it like so:
 now_if_args(function()
-  add('mason-org/mason.nvim')
-  require('mason').setup()
+	add("mason-org/mason.nvim")
+	require("mason").setup()
 
-  add({
-      source = 'mason-org/mason-lspconfig.nvim',
-      depends = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' }
-  })
-  require('mason-lspconfig').setup({
-      ensure_installed = {
-          'clangd',
-          'html',
-          'lua_ls',
-          'pyright',
-          'texlab',
-      },
-  })
+	add({
+		source = "mason-org/mason-lspconfig.nvim",
+		depends = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
+	})
+	require("mason-lspconfig").setup({
+		ensure_installed = {
+			"clangd",
+			"html",
+			"lua_ls",
+			"pyright",
+			"texlab",
+			"yamlls",
+		},
+	})
 end)
 
 -- Beautiful, usable, well maintained color schemes outside of 'mini.nvim' and
 -- have full support of its highlight groups. Use if you don't like 'miniwinter'
 -- enabled in 'plugin/30_mini.lua' or other suggested 'mini.hues' based ones.
 MiniDeps.now(function()
---   -- Install only those that you need
-   add('polirritmico/monokai-nightasty.nvim')
-   -- require('monokai').setup {}
+	--   -- Install only those that you need
+	add("polirritmico/monokai-nightasty.nvim")
+	-- require('monokai').setup {}
 
-   add('navarasu/onedark.nvim')
-   require('onedark').setup {
-       style = 'darker', -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer'
-   }
---   add('sainnhe/everforest')
---   add('Shatur/neovim-ayu')
---   add('ellisonleao/gruvbox.nvim')
---
-   -- Enable only one
-   vim.cmd('color monokai-nightasty')
+	add("navarasu/onedark.nvim")
+	require("onedark").setup({
+		style = "darker", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer'
+	})
+	--   add('sainnhe/everforest')
+	--   add('Shatur/neovim-ayu')
+	--   add('ellisonleao/gruvbox.nvim')
+	--
+	-- Enable only one
+	vim.cmd("color monokai-nightasty")
 end)
 
 -- Custom Plugins =========================================================
 
 later(function()
-  add({
-      source = 'sphamba/smear-cursor.nvim',
-  })
-end)
-later(function()
-  require('smear_cursor').setup({
-      smear_between_buffers = true,
-  })
-end)
+	add("mfussenegger/nvim-lint")
+	require("lint").linters_by_ft = {
+		javascript = { "eslint_d" },
+		typescript = { "eslint_d" },
+		javascriptreact = { "eslint_d" },
+		typescriptreact = { "eslint_d" },
+		python = { "pylint" },
+	}
 
-later(function()
-  add({
-      source = 'mbbill/undotree'
-  })
-end)
+	local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
-later(function()
-  add({
-      source = 'christoomey/vim-tmux-navigator'
-  })
+	vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+		group = lint_augroup,
+		callback = function()
+			require("lint").try_lint()
+		end,
+	})
 end)
 
 later(function()
-  add({
-      source = 'folke/snacks.nvim'
-  })
-  require('snacks').setup {
-      image = { enabled = true }
-  }
+	add({
+		source = "sphamba/smear-cursor.nvim",
+	})
+	require("smear_cursor").setup({
+		smear_between_buffers = true,
+	})
 end)
 
-
 later(function()
-  add({
-      source = 'meanderingprogrammer/render-markdown.nvim',
-      depends = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }
-  })
-  require('render-markdown').setup({})
+	add({
+		source = "mbbill/undotree",
+	})
 end)
 
+later(function()
+	add({
+		source = "christoomey/vim-tmux-navigator",
+	})
+end)
+
+-- later(function()
+--   add({
+--       source = 'folke/snacks.nvim'
+--   })
+--   require('snacks').setup {
+--       image = { enabled = true }
+--   }
+-- end)
 
 later(function()
-    add({
-        source = 'lukas-reineke/indent-blankline.nvim'
-    })
-    require("ibl").setup()
+	add({
+		source = "meanderingprogrammer/render-markdown.nvim",
+		depends = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+	})
+	require("render-markdown").setup({})
+end)
+
+-- MiniDeps.now(function()
+--
+--     add({
+--         source = "OXY2DEV/markview.nvim",
+--
+--         -- Completion for `blink.cmp`
+--         -- depends = { "saghen/blink.cmp" },
+--     });
+-- end)
+
+later(function()
+	add({
+		source = "lukas-reineke/indent-blankline.nvim",
+	})
+	require("ibl").setup()
 end)
 
 MiniDeps.now(function()
-    vim.g.vimtex_view_method = "zathura"
-    add("lervag/vimtex")
+	vim.g.vimtex_view_method = "zathura"
+	add("lervag/vimtex")
 end)
 
-later(function ()
-    add('windwp/nvim-ts-autotag')
-    require("nvim-ts-autotag").setup()
+later(function()
+	add("windwp/nvim-ts-autotag")
+	require("nvim-ts-autotag").setup()
+end)
+
+MiniDeps.now(function()
+	add("R-nvim/R.nvim")
 end)
