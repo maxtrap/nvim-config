@@ -40,7 +40,7 @@ vim.o.breakindentopt = 'list:-1'  -- Add padding for lists (if 'wrap' is set)
 vim.o.colorcolumn    = '+1'       -- Draw column on the right of maximum width
 vim.o.cursorline     = true       -- Enable current line highlighting
 vim.o.linebreak      = true       -- Wrap lines at 'breakat' (if 'wrap' is set)
-vim.o.list           = true       -- Show helpful text indicators
+vim.o.list           = false      -- Handled by indent-blankline.nvim
 vim.o.number         = true       -- Show line numbers
 vim.o.pumheight      = 10         -- Make popup menu smaller
 vim.o.ruler          = false      -- Don't show cursor coordinates
@@ -68,7 +68,6 @@ vim.o.foldtext    = ''       -- Show text under fold with its highlighting
 
 -- Editing ====================================================================
 vim.o.autoindent    = true    -- Use auto indent
-vim.o.expandtab     = true    -- Convert tabs to spaces
 vim.o.formatoptions = 'rqnl1j'-- Improve comment editing
 vim.o.ignorecase    = true    -- Ignore case during search
 vim.o.incsearch     = true    -- Show search matches while typing

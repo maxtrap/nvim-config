@@ -10,35 +10,35 @@
 
 -- An example helper to create a Normal mode mapping
 local nmap = function(lhs, rhs, desc)
-  -- See `:h vim.keymap.set()`
-  vim.keymap.set('n', lhs, rhs, { desc = desc })
+	-- See `:h vim.keymap.set()`
+	vim.keymap.set("n", lhs, rhs, { desc = desc })
 end
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
-nmap('[p', '<Cmd>exe "put! " . v:register<CR>', 'Paste Above')
-nmap(']p', '<Cmd>exe "put "  . v:register<CR>', 'Paste Below')
+nmap("[p", '<Cmd>exe "put! " . v:register<CR>', "Paste Above")
+nmap("]p", '<Cmd>exe "put "  . v:register<CR>', "Paste Below")
 
 local opts = { noremap = true, silent = true }
 
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'move down in buffer with cursor centered' })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'move up in buffer with cursor centered' })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "move down in buffer with cursor centered" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "move up in buffer with cursor centered" })
 
 -- Paste without replacing clipboard content
-vim.keymap.set('v', 'p', '"_dP', opts)
-vim.keymap.set('v', 'P', '"_dP', opts)
+vim.keymap.set("v", "p", '"_dP', opts)
+vim.keymap.set("v", "P", '"_dP', opts)
 
 -- Clears search highlights with Ctrl+C. I needed this so badly!!!
-vim.keymap.set('n', '<C-c>', ':nohl<CR>', { desc = 'Clear search hl', silent = true })
+vim.keymap.set("n", "<C-c>", ":nohl<CR>", { desc = "Clear search hl", silent = true })
 
 -- TODO This does lsp stuff I don't know yet.
 -- im.keymap.set('n', '<leader>f', vim.lsp.buf.format)
 
 -- prevent x delete from registering when next paste
-vim.keymap.set('n', 'x', '"_x', opts)
+vim.keymap.set("n", "x", '"_x', opts)
 
 -- Exit terminal mode with Esc
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Exit terminal mode' })
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 
 -- Many general mappings are create to clipboardd by 'mini.basics'. See 'plugin/30_mini.lua'
 
@@ -256,6 +256,10 @@ nmap_leader('mt', '<Cmd>lua MiniMap.toggle()<CR>',       'Toggle')
 nmap_leader('or', '<Cmd>lua MiniMisc.resize_window()<CR>', 'Resize to default width')
 nmap_leader('ot', '<Cmd>lua MiniTrailspace.trim()<CR>',    'Trim trailspace')
 nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>',          'Zoom toggle')
+
+-- r is for 'Rest'.
+nmap_leader('r', '<Cmd>Rest run<CR>', 'Rest run')
+
 
 -- s is for 'Session'. Common usage:
 -- - `<Leader>sn` - start new session

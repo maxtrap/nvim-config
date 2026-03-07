@@ -58,10 +58,10 @@ now_if_args(function()
 	-- After changing this, restart Neovim once to install necessary parsers. Wait
 	-- for the installation to finish before opening a file for added language(s).
 	local languages = {
-		-- These are already pre-installed with Neovim. Used as an example.
 		"bash",
 		"css",
 		"html",
+		"http",
 		"javascript",
 		"jsx",
 		"latex",
@@ -142,6 +142,7 @@ later(function()
 	-- - `:h conform-options`
 	-- - `:h conform-formatters`
 	require("conform").setup({
+		log_level = vim.log.levels.DEBUG,
 		default_format_opts = {
 			-- Allow formatting from LSP server if no dedicated formatter is available
 			lsp_format = "fallback",
@@ -150,16 +151,16 @@ later(function()
 		-- Make sure that necessary CLI tool is available
 		formatters_by_ft = {
 			lua = { "stylua" },
-			javascript = { "prettier" },
-			typescript = { "prettier" },
-			javascriptreact = { "prettier" },
-			typescriptreact = { "prettier" },
-			css = { "prettier" },
-			html = { "prettier" },
-			json = { "prettier" },
-			yaml = { "prettier" },
-			markdown = { "prettier" },
-			graphql = { "prettier" },
+			javascript = { "biome" },
+			typescript = { "biome" },
+			javascriptreact = { "biome" },
+			typescriptreact = { "biome" },
+			css = { "biome" },
+			html = { "biome" },
+			json = { "biome" },
+			yaml = { "biome" },
+			markdown = { "biome" },
+			graphql = { "biome" },
 			python = { "black" },
 		},
 		format_on_save = {
@@ -208,6 +209,7 @@ now_if_args(function()
 			"lua_ls",
 			"pyright",
 			"texlab",
+			"ts_ls",
 			"yamlls",
 		},
 	})
@@ -320,6 +322,16 @@ later(function()
 	require("nvim-ts-autotag").setup()
 end)
 
-MiniDeps.now(function()
-	add("R-nvim/R.nvim")
+later(function()
+	add("lewis6991/gitsigns.nvim")
+	require("gitsigns").setup({
+		current_line_blame = true,
+	})
 end)
+
+-- later(function()
+-- 	add({
+-- 		source = "rest-nvim/rest.nvim",
+-- 		dependes = { "nvim-treesitter/nvim-treesitter" },
+-- 	})
+-- end)
