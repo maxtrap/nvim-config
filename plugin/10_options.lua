@@ -126,3 +126,12 @@ local diagnostic_opts = {
 -- Use `later()` to avoid sourcing `vim.diagnostic` on startup
 MiniDeps.later(function() vim.diagnostic.config(diagnostic_opts) end)
 -- stylua: ignore end
+
+vim.api.nvim_create_user_command("Timer", function()
+	vim.o.showtabline = 0
+	vim.o.laststatus = 0
+	vim.wo.number = false
+	vim.o.scl = "no"
+	vim.o.cmdheight = 0
+	vim.cmd("TimerlyToggle")
+end, {})

@@ -9,7 +9,7 @@
 -- Use this file to install and configure other such plugins.
 
 -- Make concise helpers for installing/adding plugins in two stages
-local add, later = MiniDeps.add, MiniDeps.later
+local add, later, now = MiniDeps.add, MiniDeps.later, MiniDeps.now
 local now_if_args = _G.Config.now_if_args
 
 -- Tree-sitter ================================================================
@@ -69,6 +69,7 @@ now_if_args(function()
 		"markdown",
 		"markdown_inline",
 		"r",
+		"typst",
 		"vimdoc",
 		"python",
 		"yaml",
@@ -210,6 +211,7 @@ now_if_args(function()
 			"pyright",
 			"texlab",
 			"ts_ls",
+			"tinymist",
 			"yamlls",
 		},
 	})
@@ -278,22 +280,42 @@ later(function()
 	})
 end)
 
--- later(function()
---   add({
---       source = 'folke/snacks.nvim'
---   })
---   require('snacks').setup {
---       image = { enabled = true }
---   }
--- end)
-
 later(function()
 	add({
-		source = "meanderingprogrammer/render-markdown.nvim",
-		depends = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+		source = "folke/snacks.nvim",
 	})
-	require("render-markdown").setup({})
+	--   require('snacks').setup {
+	--       image = { enabled = true }
+	--   }
 end)
+
+-- add({
+-- 	source = "yetone/avante.nvim",
+-- 	monitor = "main",
+-- 	depends = {
+-- 		"nvim-lua/plenary.nvim",
+-- 		"MunifTanjim/nui.nvim",
+-- 		"echasnovski/mini.icons",
+-- 	},
+-- 	hooks = {
+-- 		post_checkout = function()
+-- 			vim.cmd("make")
+-- 		end,
+-- 	},
+-- })
+-- require("avante").setup({})
+-- -- add({ source = 'hrsh7th/nvim-cmp' })
+-- add({ source = "zbirenbaum/copilot.lua" })
+-- require("copilot").setup({})
+-- add({ source = "HakonHarnes/img-clip.nvim" })
+--
+-- later(function()
+-- 	add({
+-- 		source = "meanderingprogrammer/render-markdown.nvim",
+-- 		depends = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+-- 	})
+-- 	require("render-markdown").setup({})
+-- end)
 
 -- MiniDeps.now(function()
 --
@@ -321,7 +343,6 @@ later(function()
 	add("windwp/nvim-ts-autotag")
 	require("nvim-ts-autotag").setup()
 end)
-
 later(function()
 	add("lewis6991/gitsigns.nvim")
 	require("gitsigns").setup({
@@ -335,3 +356,45 @@ end)
 -- 		dependes = { "nvim-treesitter/nvim-treesitter" },
 -- 	})
 -- end)
+
+later(function()
+	add("chomosuke/typst-preview.nvim")
+	require("typst-preview").setup()
+end)
+
+later(function()
+	add("kdheepak/lazygit.nvim")
+end)
+
+later(function()
+	add("coder/claudecode.nvim")
+	require("claudecode").setup()
+end)
+
+later(function()
+	add({
+		source = "nosduco/remote-sshfs.nvim",
+		depends = { "folke/snacks.nvim" },
+	})
+	require("remote-sshfs").setup()
+end)
+
+-- later(function()
+-- 	add("nvzone/volt")
+--
+-- 	add({
+-- 		source = "nvzone/timerly",
+-- 		depends = { "nvzone/volt" },
+-- 	})
+-- end)
+
+later(function()
+	add("hat0uma/csvview.nvim")
+	require("csvview").setup({ view = { display_mode = "border" } })
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "csv",
+		callback = function()
+			require("csvview").enable()
+		end,
+	})
+end)
